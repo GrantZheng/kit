@@ -110,6 +110,21 @@ func GetGOPATH() string {
 	return defaultGOPATH()
 }
 
+func IsInGopath() bool {
+	gosrc := GetGOPATH() + "/src/"
+	gosrc = strings.Replace(gosrc, "\\", "/", -1)
+	pwd, err := os.Getwd()
+	if err != nil {
+		return false
+	}
+	if viper.GetString("gk_folder") != "" {
+		pwd += "/" + viper.GetString("gk_folder")
+	}
+
+	pwd = strings.Replace(pwd, "\\", "/", -1)
+	return strings.Contains(pwd, gosrc)
+}
+
 func defaultGOPATH() string {
 	env := "HOME"
 	if runtime.GOOS == "windows" {

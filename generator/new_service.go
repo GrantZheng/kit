@@ -69,10 +69,14 @@ func (g *NewService) genModule() error {
 	}
 
 	moduleName := prjName
+	if utils.IsInGopath() {
+		moduleName = ""
+	}
+
 	if viper.GetString("n_s_module") != "" {
 		moduleName = viper.GetString("n_s_module")
 		moduleNameSlice := strings.Split(moduleName, "/")
-		moduleNameSlice[len(moduleNameSlice) - 1] = utils.ToLowerSnakeCase(moduleNameSlice[len(moduleNameSlice) - 1])
+		moduleNameSlice[len(moduleNameSlice)-1] = utils.ToLowerSnakeCase(moduleNameSlice[len(moduleNameSlice)-1])
 		moduleName = strings.Join(moduleNameSlice, "/")
 	}
 	cmdStr := "cd " + prjName + " && go mod init " + moduleName
